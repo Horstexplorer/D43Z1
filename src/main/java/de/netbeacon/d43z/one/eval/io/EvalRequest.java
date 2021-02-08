@@ -33,7 +33,7 @@ public class EvalRequest {
     private final ExecutorService evalResultConsumerExecutor;
     private final long requestTimestamp;
 
-    public EvalRequest(ContextPool contextPool, ContentMatchBuffer contentMatchBuffer, Content content, Consumer<EvalResult> evalResultConsumer, ExecutorService evalResultConsumerExecutor){
+    public EvalRequest(IContextPool contextPool, ContentMatchBuffer contentMatchBuffer, Content content, Consumer<EvalResult> evalResultConsumer, ExecutorService evalResultConsumerExecutor){
         this.contextPool = contextPool;
         this.contentMatchBuffer = contentMatchBuffer;
         this.content = content;
