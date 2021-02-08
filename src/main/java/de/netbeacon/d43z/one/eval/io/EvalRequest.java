@@ -17,7 +17,6 @@
 package de.netbeacon.d43z.one.eval.io;
 
 import de.netbeacon.d43z.one.objects.base.Content;
-import de.netbeacon.d43z.one.objects.base.ContextPool;
 import de.netbeacon.d43z.one.objects.bp.IContextPool;
 import de.netbeacon.d43z.one.objects.eval.ContentMatchBuffer;
 
