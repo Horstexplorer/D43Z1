@@ -32,7 +32,7 @@ public class ShutdownHook {
     public ShutdownHook(){
         Runtime.getRuntime().addShutdownHook(new Thread(()->{
             while(!shutdownDeque.isEmpty()){
-                IShutdown iShutdown = shutdownDeque.remove();
+                IShutdown iShutdown = shutdownDeque.removeLast();
                 try{
                     iShutdown.onShutdown();
                 }catch (Exception e){

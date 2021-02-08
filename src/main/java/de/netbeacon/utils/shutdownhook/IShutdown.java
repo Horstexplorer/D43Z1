@@ -18,6 +18,6 @@ package de.netbeacon.utils.shutdownhook;
 
 public interface IShutdown {
 
-    public void onShutdown() throws ShutdownException;
+    public void onShutdown() throws Exception;
 
 }
