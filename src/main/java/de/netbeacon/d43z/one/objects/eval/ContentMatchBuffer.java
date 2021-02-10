@@ -74,6 +74,6 @@ public class ContentMatchBuffer implements IIdentifiable {
     }
 
     private float getBonusFor(int pos){
-        return BUFFER_BONUS - BUFFER_BONUS_SUBTRACTION * (lastMatches.size()-1) - pos;
+        return BUFFER_BONUS - BUFFER_BONUS_SUBTRACTION * ((lastMatches.size()-1) - pos);
     }
 }
