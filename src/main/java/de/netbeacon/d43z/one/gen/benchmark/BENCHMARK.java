@@ -48,10 +48,10 @@ public class BENCHMARK {
         System.out.println();
         System.out.println("Settings:");
 
-        System.out.println("Processing Threads Total: "+EVAL_MAX_PROCESSING_THREADS);
-        System.out.println("Processing Threads Per Request: "+EVAL_MAX_THREADS_PER_REQUEST);
-        System.out.println("Algorithm: "+EVAL_ALGORITHM);
-        System.out.println("Eval Processing Time: "+EVAL_MAX_PROCESSING_TIME+" downTo "+EVAL_MIN_PROCESSING_TIME);
+        System.out.println("Processing Threads Total: "+EVAL_MAX_PROCESSING_THREADS.get());
+        System.out.println("Processing Threads Per Request: "+EVAL_MAX_THREADS_PER_REQUEST.get());
+        System.out.println("Algorithm: "+EVAL_ALGORITHM.get());
+        System.out.println("Eval Processing Time: "+EVAL_MAX_PROCESSING_TIME.get()+" downTo "+EVAL_MIN_PROCESSING_TIME.get());
         System.out.println("----------------------------------------------------------------------------------------------------");
         System.out.println("Creating Test Data");
         long a = System.currentTimeMillis();
