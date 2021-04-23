@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 group 'de.netbeacon.d43z1'
@@ -37,7 +37,7 @@ publishing {
             artifact(tasks["shadowJar"])
             pom {
                 name = 'D43Z1'
-                description = 'A simple wrapper for the anime image api provided by PurrBot'
+                description = 'Toolkit to build simple chatbots'
                 url = 'https://github.com/Horstexplorer/D43Z1'
 
                 licenses {

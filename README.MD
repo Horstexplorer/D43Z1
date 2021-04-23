@@ -30,8 +30,8 @@ Maven:
 </dependency>
 ```
 Or from our CI  
-[View all]() /
-[Direct download]()  
+[View all](https://ci.netbeacon.de/viewType.html?buildTypeId=Netbeacon_Miscellaneous_D43z1ChatbotToolkit) /
+[Direct download](https://ci.netbeacon.de/repository/download/Netbeacon_Miscellaneous_D43z1ChatbotToolkit/latest.lastSuccessful/D43Z1_latest.jar)  
 Or here from GitHub
 
 ## Usage
