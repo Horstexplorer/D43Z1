@@ -18,25 +18,53 @@ package de.netbeacon.d43z.one.objects.settings;
 
 import de.netbeacon.d43z.one.objects.bp.ISimilarity;
 
+import java.util.function.Supplier;
+
 public class StaticSettings {
 
-    public static final int CONTENT_SHARD_SIZE = 5000;
-    public static final int BUFFER_MAX_SIZE = 5;
-    public static final boolean EVAL_ENABLE_BUFFER_BONUS_POLICY = true;
-    public static final float BUFFER_BONUS = 0.05F;
-    public static final float BUFFER_BONUS_SUBTRACTION = 0.005F;
-    public static final boolean EVAL_ENABLE_TAG_POLICY = false;
-    public static final float EVAL_TAG_BONUS_PER_MATCH = 0.05F;
-    public static final float EVAL_TAG_POLICY_OVERRIDE_THRESHOLD = 0.49F;
-    public static final int EVAL_LIAMUS_JACCARD_NGRAM = 2;
-    public static final boolean EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH = true;
-    public static final float EVAL_RANDOM_DIF = 0.00005F;
-    public static final int EVAL_MAX_PROCESSING_THREADS = Runtime.getRuntime().availableProcessors()*2;
-    public static final int EVAL_MAX_THREADS_PER_REQUEST = EVAL_MAX_PROCESSING_THREADS/8;
-    public static final int EVAL_MAX_CONCURRENT_TASKS = EVAL_MAX_PROCESSING_THREADS/EVAL_MAX_THREADS_PER_REQUEST;
-    public static final ISimilarity.Algorithm EVAL_ALGORITHM = ISimilarity.Algorithm.LIAMUS_JACCARD;
-    public static final int EVAL_AVG_BASE = 250;
-    public static final int EVAL_MAX_PROCESSING_TIME = 5000;
-    public static final int EVAL_MIN_PROCESSING_TIME = 250;
+    public static final Setting<Integer> CONTENT_SHARD_SIZE = new Setting<>(5000);
+    public static final Setting<Integer> BUFFER_MAX_SIZE = new Setting<>(5);
+    public static final Setting<Boolean> EVAL_ENABLE_BUFFER_BONUS_POLICY = new Setting<>(true);
+    public static final Setting<Float> BUFFER_BONUS = new Setting<>(0.05F);
+    public static final Setting<Float> BUFFER_BONUS_SUBTRACTION = new Setting<>(0.005F);
+    public static final Setting<Boolean> EVAL_ENABLE_TAG_POLICY = new Setting<>(false);
+    public static final Setting<Float> EVAL_TAG_BONUS_PER_MATCH = new Setting<>( 0.05F);
+    public static final Setting<Float> EVAL_TAG_POLICY_OVERRIDE_THRESHOLD = new Setting<>(0.49F);
+    public static final Setting<Integer> EVAL_LIAMUS_JACCARD_NGRAM = new Setting<>(2);
+    public static final Setting<Boolean> EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH = new Setting<>(true);
+    public static final Setting<Float> EVAL_RANDOM_DIF = new Setting<>(0.00005F);
+    public static final Setting<Integer> EVAL_MAX_PROCESSING_THREADS = new Setting<>(() -> Runtime.getRuntime().availableProcessors()*2);
+    public static final Setting<Integer> EVAL_MAX_THREADS_PER_REQUEST = new Setting<>(() -> EVAL_MAX_PROCESSING_THREADS.get()/8);
+    public static final Setting<Integer> EVAL_MAX_CONCURRENT_TASKS = new Setting<>(() -> EVAL_MAX_PROCESSING_THREADS.get()/EVAL_MAX_THREADS_PER_REQUEST.get());
+    public static final Setting<ISimilarity.Algorithm> EVAL_ALGORITHM = new Setting<>(ISimilarity.Algorithm.LIAMUS_JACCARD);
+    public static final Setting<Integer> EVAL_AVG_BASE = new Setting<>(250);
+    public static final Setting<Integer> EVAL_MAX_PROCESSING_TIME = new Setting<>(5000);
+    public static final Setting<Integer> EVAL_MIN_PROCESSING_TIME = new Setting<>(250);
 
+
+    public static class Setting<T> {
+
+        private Supplier<T> supplier;
+
+        public Setting(T value){
+            this.supplier = () -> value;
+        }
+
+        public Setting(Supplier<T> supplier){
+            this.supplier = supplier;
+        }
+
+        public void override(T value){
+            this.supplier = () -> value;
+        }
+
+        public void override(Supplier<T> supplier){
+            this.supplier = supplier;
+        }
+
+        public T get(){
+            return supplier.get();
+        }
+
+    }
 }

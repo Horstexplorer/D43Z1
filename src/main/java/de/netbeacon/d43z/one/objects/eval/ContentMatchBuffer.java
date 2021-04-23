@@ -38,7 +38,7 @@ public class ContentMatchBuffer implements IIdentifiable {
 
     public synchronized void push(ContentMatch contentMatch){
         lastMatches.add(contentMatch);
-        if(lastMatches.size() > BUFFER_MAX_SIZE){
+        if(lastMatches.size() > BUFFER_MAX_SIZE.get()){
             lastMatches.remove(0);
         }
     }
@@ -75,7 +75,7 @@ public class ContentMatchBuffer implements IIdentifiable {
     }
 
     private float getPositionBonusFor(int pos){
-        return BUFFER_BONUS - BUFFER_BONUS_SUBTRACTION * ((lastMatches.size()-1) - pos);
+        return BUFFER_BONUS.get() - BUFFER_BONUS_SUBTRACTION.get() * ((lastMatches.size()-1) - pos);
     }
 
     protected int size(){
@@ -103,13 +103,13 @@ public class ContentMatchBuffer implements IIdentifiable {
         }
 
         public float getRawFillState(){
-            return contentMatchBuffer.size() / (float) BUFFER_MAX_SIZE;
+            return contentMatchBuffer.size() / (float) BUFFER_MAX_SIZE.get();
         }
 
         public FillState getFillState(){
             if(contentMatchBuffer.size() == 0){
                 return  FillState.EMPTY;
-            }else if(contentMatchBuffer.size() != BUFFER_MAX_SIZE){
+            }else if(contentMatchBuffer.size() != BUFFER_MAX_SIZE.get()){
                 return FillState.PARTIAL;
             }else{
                 return FillState.FULL;

@@ -78,8 +78,8 @@ public interface ISimilarity extends IContentprovider, IWeightable{
 
     public default float getRandomDif(){
         float randomOffset = 0;
-        if(StaticSettings.EVAL_RANDOM_DIF > 0){
-            randomOffset = (-StaticSettings.EVAL_RANDOM_DIF) + RANDOM.nextFloat()*(2*StaticSettings.EVAL_RANDOM_DIF);
+        if(StaticSettings.EVAL_RANDOM_DIF.get() > 0){
+            randomOffset = (-StaticSettings.EVAL_RANDOM_DIF.get()) + RANDOM.nextFloat()*(2 * StaticSettings.EVAL_RANDOM_DIF.get());
         }
         return randomOffset;
     }

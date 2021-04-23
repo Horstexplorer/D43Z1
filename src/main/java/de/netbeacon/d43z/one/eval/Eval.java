@@ -38,8 +38,8 @@ import static de.netbeacon.d43z.one.objects.settings.StaticSettings.*;
 public class Eval implements IShutdown {
 
     private final ExecutorService REQUESTER_EXECUTOR = Executors.newSingleThreadExecutor();
-    private final ThreadPoolExecutor REQUESTER_EXECUTOR_2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(EVAL_MAX_CONCURRENT_TASKS);
-    private final ExecutorService PROCESSING_EXECUTOR = Executors.newFixedThreadPool(EVAL_MAX_PROCESSING_THREADS);
+    private final ThreadPoolExecutor REQUESTER_EXECUTOR_2 = (ThreadPoolExecutor) Executors.newFixedThreadPool(EVAL_MAX_CONCURRENT_TASKS.get());
+    private final ExecutorService PROCESSING_EXECUTOR = Executors.newFixedThreadPool(EVAL_MAX_PROCESSING_THREADS.get());
     private final SuspendableBlockingQueue<EvalRequest> requestQueue = new SuspendableBlockingQueue<>();
     private final Object REQUESTER_NOTIFICATOR = new Object();
 
@@ -72,13 +72,13 @@ public class Eval implements IShutdown {
 
     private void updateQueueTimeMs(long ms){
         synchronized (queueTimeAVG){
-            queueTimeAVG.set(((queueTimeAVG.get()*EVAL_AVG_BASE)+ms)/EVAL_AVG_BASE);
+            queueTimeAVG.set(((queueTimeAVG.get()*EVAL_AVG_BASE.get())+ms)/EVAL_AVG_BASE.get());
         }
     }
 
     private void updateEvalTimeNs(long ns){
         synchronized (evalTimeAVG){
-            evalTimeAVG.set(((evalTimeAVG.get()*EVAL_AVG_BASE)+ns)/EVAL_AVG_BASE);
+            evalTimeAVG.set(((evalTimeAVG.get()*EVAL_AVG_BASE.get())+ns)/EVAL_AVG_BASE.get());
         }
     }
 
@@ -92,11 +92,11 @@ public class Eval implements IShutdown {
                     EvalRequest evalRequest = requestQueue.get();
                     long queueTime = System.currentTimeMillis() - evalRequest.getRequestTimestamp();
                     updateQueueTimeMs(queueTime);
-                    final long maxEvalTime = Math.max(EVAL_MAX_PROCESSING_TIME - queueTime, EVAL_MIN_PROCESSING_TIME);
+                    final long maxEvalTime = Math.max(EVAL_MAX_PROCESSING_TIME.get() - queueTime, EVAL_MIN_PROCESSING_TIME.get());
                     REQUESTER_EXECUTOR_2.execute(() -> {
                         try{
                             long startNanos = System.nanoTime();
-                            ContentMatch contentMatch = RUN_EVAL(EVAL_ALGORITHM, evalRequest.getContextPool(), evalRequest.getContentMatchBuffer(), evalRequest.getContent(), maxEvalTime);
+                            ContentMatch contentMatch = RUN_EVAL(EVAL_ALGORITHM.get(), evalRequest.getContextPool(), evalRequest.getContentMatchBuffer(), evalRequest.getContent(), maxEvalTime);
                             updateEvalTimeNs(System.nanoTime() - startNanos);
                             evalRequest.getCallbackExecutor().execute(() -> evalRequest.getCallback().accept(new EvalResult(contentMatch)));
                         }catch (Exception e){
@@ -124,7 +124,7 @@ public class Eval implements IShutdown {
         ConcurrentLinkedQueue<ContentShard> contentQueue = new ConcurrentLinkedQueue<>(contentShards);
 
         List<Future<ContentMatch>> processingFutures = new ArrayList<>();
-        for(int i = 0; i < EVAL_MAX_THREADS_PER_REQUEST; i++){
+        for(int i = 0; i < EVAL_MAX_THREADS_PER_REQUEST.get(); i++){
             processingFutures.add(PROCESSING_EXECUTOR.submit(()-> RUN_ANALYZE(contentQueue, contentMatchBuffer, algorithm, content, maxDurationMs)));
         }
         ContentMatch bestMatch = new ContentMatch(null, null, null, null, -1);
@@ -158,7 +158,7 @@ public class Eval implements IShutdown {
             long startNanos = System.nanoTime();
             while((System.nanoTime() - startNanos) < (maxDurationMs * 1000000) && (contentShard = contentShards.poll()) != null){
                 int tagMatches = 0;
-                if(EVAL_ENABLE_TAG_POLICY && lastMatch != null && fillState.equals(ContentMatchBuffer.Statistics.FillState.FULL) && avgOPM > EVAL_TAG_POLICY_OVERRIDE_THRESHOLD){
+                if(EVAL_ENABLE_TAG_POLICY.get() && lastMatch != null && fillState.equals(ContentMatchBuffer.Statistics.FillState.FULL) && avgOPM > EVAL_TAG_POLICY_OVERRIDE_THRESHOLD.get()){
                     Set<String> subC = new HashSet<>(contentShard.getParent().getMetaTags());
                     subC.removeAll(expectedMetaTags);
                     tagMatches = contentShard.getParent().getMetaTags().size()-subC.size();
@@ -170,12 +170,12 @@ public class Eval implements IShutdown {
                 // calculate adjustment
                 float adjustment = 0;
                 // buffer adjustment
-                if(EVAL_ENABLE_BUFFER_BONUS_POLICY && matchEval.containsKey(contentMatch.getOrigin().getParent())){
+                if(EVAL_ENABLE_BUFFER_BONUS_POLICY.get() && matchEval.containsKey(contentMatch.getOrigin().getParent())){
                     adjustment += matchEval.get(contentMatch.getOrigin().getParent());
                 }
                 // tag adjustment
-                if(EVAL_ENABLE_TAG_POLICY && lastMatch != null && lastMatch.getAdjustedCoefficient() > EVAL_TAG_POLICY_OVERRIDE_THRESHOLD){
-                    adjustment += tagMatches * EVAL_TAG_BONUS_PER_MATCH;
+                if(EVAL_ENABLE_TAG_POLICY.get() && lastMatch != null && lastMatch.getAdjustedCoefficient() > EVAL_TAG_POLICY_OVERRIDE_THRESHOLD.get()){
+                    adjustment += tagMatches * EVAL_TAG_BONUS_PER_MATCH.get();
                 }
                 // set adjustment
                 contentMatch.setCoefficientAdjustment(adjustment);

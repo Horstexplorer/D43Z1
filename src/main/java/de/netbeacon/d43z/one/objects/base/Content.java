@@ -39,7 +39,7 @@ public class Content implements IIdentifiable, IContentprovider, ISimilarity, IL
     public Content(String content){
         this.uuid = UUID.randomUUID();
         this.content = content;
-        this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM);
+        this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH.get()) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM.get());
     }
 
     @Override
@@ -80,6 +80,6 @@ public class Content implements IIdentifiable, IContentprovider, ISimilarity, IL
         this.uuid = UUID.fromString(jsonObject.getString("contentId"));
         this.weight = jsonObject.getFloat("contentWeight");
         this.content = jsonObject.getString("content");
-        this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM);
+        this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH.get()) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM.get());
     }
 }
