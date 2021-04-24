@@ -20,8 +20,10 @@ import de.netbeacon.d43z.one.objects.base.Trigger;
 
 import java.util.regex.Pattern;
 
-public class RegexTrigger extends Trigger<Boolean> {
-    public RegexTrigger(int pos, String desc, Pattern pattern) {
-        super(pos, desc, Type.REGEX, (input) -> pattern.matcher(input).matches(), (bool) -> bool, (aBoolean) -> aBoolean ? 1F : 0F);
-    }
+public class RegexTrigger extends Trigger<Boolean>{
+
+	public RegexTrigger(int pos, String desc, Pattern pattern){
+		super(pos, desc, Type.REGEX, (input) -> pattern.matcher(input).matches(), (bool) -> bool, (aBoolean) -> aBoolean ? 1F : 0F);
+	}
+
 }

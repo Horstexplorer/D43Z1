@@ -22,33 +22,35 @@ import java.util.Deque;
 /**
  * @author horstexplorer
  */
-public class ShutdownHook {
+public class ShutdownHook{
 
-    private final Deque<IShutdown> shutdownDeque = new ArrayDeque<>();
+	private final Deque<IShutdown> shutdownDeque = new ArrayDeque<>();
 
-    /**
-     * Creates a new instance of this class and registers a new shutdown hook
-     */
-    public ShutdownHook(){
-        Runtime.getRuntime().addShutdownHook(new Thread(()->{
-            while(!shutdownDeque.isEmpty()){
-                IShutdown iShutdown = shutdownDeque.removeLast();
-                try{
-                    iShutdown.onShutdown();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }));
-    }
+	/**
+	 * Creates a new instance of this class and registers a new shutdown hook
+	 */
+	public ShutdownHook(){
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			while(!shutdownDeque.isEmpty()){
+				IShutdown iShutdown = shutdownDeque.removeLast();
+				try{
+					iShutdown.onShutdown();
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}));
+	}
 
-    /**
-     * Adds a new Object to be executed on this shutdown hook
-     * Added objects will be shut down in reverse order
-     *
-     * @param iShutdown object
-     */
-    public void addShutdownAble(IShutdown iShutdown){
-        shutdownDeque.add(iShutdown);
-    }
+	/**
+	 * Adds a new Object to be executed on this shutdown hook
+	 * Added objects will be shut down in reverse order
+	 *
+	 * @param iShutdown object
+	 */
+	public void addShutdownAble(IShutdown iShutdown){
+		shutdownDeque.add(iShutdown);
+	}
+
 }

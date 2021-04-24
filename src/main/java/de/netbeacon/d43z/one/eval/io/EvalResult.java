@@ -17,30 +17,30 @@
 package de.netbeacon.d43z.one.eval.io;
 
 import de.netbeacon.d43z.one.objects.eval.ContentMatch;
-import de.netbeacon.d43z.one.objects.eval.ContentMatchBuffer;
 
-public class EvalResult {
+public class EvalResult{
 
-    private ContentMatch contentMatch;
-    private Exception exception;
+	private ContentMatch contentMatch;
+	private Exception exception;
 
-    public EvalResult(ContentMatch contentMatch){
-        this.contentMatch = contentMatch;
-    }
+	public EvalResult(ContentMatch contentMatch){
+		this.contentMatch = contentMatch;
+	}
 
-    public EvalResult(Exception e){
-        this.exception = e;
-    }
+	public EvalResult(Exception e){
+		this.exception = e;
+	}
 
-    public ContentMatch getContentMatch() {
-        return contentMatch;
-    }
+	public ContentMatch getContentMatch(){
+		return contentMatch;
+	}
 
-    public Exception getException() {
-        return exception;
-    }
+	public Exception getException(){
+		return exception;
+	}
 
-    public boolean ok(){
-        return exception == null;
-    }
+	public boolean ok(){
+		return exception == null;
+	}
+
 }

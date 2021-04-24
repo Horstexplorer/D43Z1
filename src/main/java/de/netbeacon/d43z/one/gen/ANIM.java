@@ -30,31 +30,32 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class ANIM {
+public class ANIM{
 
-    public static void main(String...args) throws IOException {
-        File inDir = new File("F:\\D31\\animeinput.txt");
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(inDir));
-        String line;
-        List<ContentContext> contentContexts = new ArrayList<>();
-        // initial
-        String name = bufferedReader.readLine();
-        List<Content> contentList = new ArrayList<>();
-        while((line = bufferedReader.readLine()) != null){
-            if(!line.startsWith(">")){
-                contentContexts.add(new ContentContext(name, new HashSet<>(), new ArrayList<>(contentList)));
-                name = line;
-                contentList.clear();
-            }else{
-                line = line.substring(1).replaceAll("\\s+", " ");
-                contentList.add(new Content(line));
-            }
-        }
-        for(var part : ListUtils.partition(contentContexts, contentContexts.size()/2)){
-            ContextPool contextPool = new ContextPool("Anime Subtitles", part);
-            File out = new File("F:\\D31\\OUT\\"+contextPool.getUUID().toString()+".json");
-            Files.write(out.toPath(), contextPool.asJSON().toString(1).getBytes());
-        }
-    }
+	public static void main(String... args) throws IOException{
+		File inDir = new File("F:\\D31\\animeinput.txt");
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(inDir));
+		String line;
+		List<ContentContext> contentContexts = new ArrayList<>();
+		// initial
+		String name = bufferedReader.readLine();
+		List<Content> contentList = new ArrayList<>();
+		while((line = bufferedReader.readLine()) != null){
+			if(!line.startsWith(">")){
+				contentContexts.add(new ContentContext(name, new HashSet<>(), new ArrayList<>(contentList)));
+				name = line;
+				contentList.clear();
+			}
+			else{
+				line = line.substring(1).replaceAll("\\s+", " ");
+				contentList.add(new Content(line));
+			}
+		}
+		for(var part : ListUtils.partition(contentContexts, contentContexts.size() / 2)){
+			ContextPool contextPool = new ContextPool("Anime Subtitles", part);
+			File out = new File("F:\\D31\\OUT\\" + contextPool.getUUID().toString() + ".json");
+			Files.write(out.toPath(), contextPool.asJSON().toString(1).getBytes());
+		}
+	}
 
 }

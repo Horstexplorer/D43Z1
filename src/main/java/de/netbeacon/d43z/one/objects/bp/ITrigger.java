@@ -16,26 +16,27 @@
 
 package de.netbeacon.d43z.one.objects.bp;
 
-public interface ITrigger {
+public interface ITrigger{
 
-    enum Type {
-        CUSTOM,
-        LIAMUSPATTERN,
-        MATCH,
-        REGEX
-    }
+	enum Type{
+		CUSTOM,
+		LIAMUSPATTERN,
+		MATCH,
+		REGEX
+	}
 
-    default boolean testB(String input){ return false; }
+	default boolean testB(String input){ return false; }
 
-    default float testF(String input){ return 0F; }
+	default float testF(String input){ return 0F; }
 
-    default boolean testB(IContentprovider iContentprovider){ return false; }
+	default boolean testB(IContentprovider iContentprovider){ return false; }
 
-    default float testF(IContentprovider iContentprovider){ return 0F; }
+	default float testF(IContentprovider iContentprovider){ return 0F; }
 
-    int getPos();
+	int getPos();
 
-    String getDescription();
+	String getDescription();
 
-    Type getType();
+	Type getType();
+
 }

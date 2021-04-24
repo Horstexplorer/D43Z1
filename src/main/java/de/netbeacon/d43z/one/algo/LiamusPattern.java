@@ -27,72 +27,77 @@ import java.util.stream.Collectors;
 /**
  * Heavily simplified version of a pattern matcher utilizing LiamusJaccard for string matches
  */
-public class LiamusPattern {
+public class LiamusPattern{
 
-    private static final int JACCARD_ARRAY_64WORDS = 4;
-    private static final java.util.regex.Pattern SPLIT = java.util.regex.Pattern.compile("\\s+");
-    private final LiamusJaccard.BitArray64[] pattern;
+	private static final int JACCARD_ARRAY_64WORDS = 4;
+	private static final java.util.regex.Pattern SPLIT = java.util.regex.Pattern.compile("\\s+");
+	private final LiamusJaccard.BitArray64[] pattern;
 
-    private LiamusPattern(LiamusJaccard.BitArray64[] pattern){
-        this.pattern = pattern;
-    }
+	private LiamusPattern(LiamusJaccard.BitArray64[] pattern){
+		this.pattern = pattern;
+	}
 
-    public static LiamusPattern compile(String pattern){
-        String[] parts = SPLIT.split(pattern);
-        LiamusJaccard.BitArray64[] array64 = new LiamusJaccard.BitArray64[parts.length];
-        for(int i = 0; i < parts.length; i++){
-            if(parts[i].codePointAt(0) == '\0'){
-                array64[i] = null;
-            }else{
-                array64[i] = LiamusJaccard.hashString(parts[i], 1, JACCARD_ARRAY_64WORDS);
-            }
-        }
-        return new LiamusPattern(array64);
-    }
+	public static LiamusPattern compile(String pattern){
+		String[] parts = SPLIT.split(pattern);
+		LiamusJaccard.BitArray64[] array64 = new LiamusJaccard.BitArray64[parts.length];
+		for(int i = 0; i < parts.length; i++){
+			if(parts[i].codePointAt(0) == '\0'){
+				array64[i] = null;
+			}
+			else{
+				array64[i] = LiamusJaccard.hashString(parts[i], 1, JACCARD_ARRAY_64WORDS);
+			}
+		}
+		return new LiamusPattern(array64);
+	}
 
 
-    public Pair<Boolean, Float> match(String input){
-        // s0
-        List<LiamusJaccard.BitArray64> bitArray64s = Arrays.stream(SPLIT.split(input)).map(part -> LiamusJaccard.hashString(part, 1, JACCARD_ARRAY_64WORDS)).collect(Collectors.toList());
-        // s1
-        List<Float[]> stage1Results = new ArrayList<>();
-        for(LiamusJaccard.BitArray64 bitArray64 : bitArray64s){
-            Float[] results = new Float[pattern.length];
-            for(int i = 0; i < pattern.length; i++){
-                if(pattern[i] == null){
-                    results[i] = -1F;
-                }else{
-                    results[i] = LiamusJaccard.similarityCoefficient(bitArray64, pattern[i]);
-                }
-            }
-            stage1Results.add(results);
-        }
-        // s2
-        List<Triplet<Integer, Integer, Float>> stage2Results = new ArrayList<>();
-        for(int i = 0; i < stage1Results.size(); i++){
-            Float[] floats = stage1Results.get(i);
-            Triplet<Integer, Integer, Float> best = new Triplet<>(0,0,-1F);
-            for(int ii = 0; ii < floats.length; ii++){
-                if(best.getValue3() >= floats[ii]) continue;
-                best = new Triplet<>(i, ii, floats[ii]);
-            }
-            stage2Results.add(best);
-        }
-        // s3
-        boolean resultState = true;
-        int last = 0;
-        for(var triplet : stage2Results){
-            if(triplet.getValue2() < last && triplet.getValue3() > 0.3F){
-                resultState = false;
-                break;
-            }else if(triplet.getValue3() >= 0.3F){
-                last = triplet.getValue2();
-            }
-        }
-        // s4
-        float value = stage2Results.stream().filter(t -> t.getValue3() > 0).map(Triplet::getValue3).reduce(0F,Float::sum)/stage2Results.stream().filter(t -> t.getValue3() > 0).count();
-        // return
-        return new Pair<>(resultState, value);
-    }
+	public Pair<Boolean, Float> match(String input){
+		// s0
+		List<LiamusJaccard.BitArray64> bitArray64s = Arrays.stream(SPLIT.split(input)).map(part -> LiamusJaccard.hashString(part, 1, JACCARD_ARRAY_64WORDS)).collect(Collectors.toList());
+		// s1
+		List<Float[]> stage1Results = new ArrayList<>();
+		for(LiamusJaccard.BitArray64 bitArray64 : bitArray64s){
+			Float[] results = new Float[pattern.length];
+			for(int i = 0; i < pattern.length; i++){
+				if(pattern[i] == null){
+					results[i] = -1F;
+				}
+				else{
+					results[i] = LiamusJaccard.similarityCoefficient(bitArray64, pattern[i]);
+				}
+			}
+			stage1Results.add(results);
+		}
+		// s2
+		List<Triplet<Integer, Integer, Float>> stage2Results = new ArrayList<>();
+		for(int i = 0; i < stage1Results.size(); i++){
+			Float[] floats = stage1Results.get(i);
+			Triplet<Integer, Integer, Float> best = new Triplet<>(0, 0, -1F);
+			for(int ii = 0; ii < floats.length; ii++){
+				if(best.getValue3() >= floats[ii]){
+					continue;
+				}
+				best = new Triplet<>(i, ii, floats[ii]);
+			}
+			stage2Results.add(best);
+		}
+		// s3
+		boolean resultState = true;
+		int last = 0;
+		for(var triplet : stage2Results){
+			if(triplet.getValue2() < last && triplet.getValue3() > 0.3F){
+				resultState = false;
+				break;
+			}
+			else if(triplet.getValue3() >= 0.3F){
+				last = triplet.getValue2();
+			}
+		}
+		// s4
+		float value = stage2Results.stream().filter(t -> t.getValue3() > 0).map(Triplet::getValue3).reduce(0F, Float::sum) / stage2Results.stream().filter(t -> t.getValue3() > 0).count();
+		// return
+		return new Pair<>(resultState, value);
+	}
 
 }

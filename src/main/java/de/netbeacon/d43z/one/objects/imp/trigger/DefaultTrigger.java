@@ -18,29 +18,30 @@ package de.netbeacon.d43z.one.objects.imp.trigger;
 
 import de.netbeacon.d43z.one.objects.base.Trigger;
 
-public class DefaultTrigger extends Trigger<Object> {
-    
-    public DefaultTrigger() {
-        super(Integer.MIN_VALUE, "Default Trigger", null, null, null, null);
-    }
+public class DefaultTrigger extends Trigger<Object>{
 
-    @Override
-    public boolean testB(String input) {
-        return true;
-    }
+	public DefaultTrigger(){
+		super(Integer.MIN_VALUE, "Default Trigger", null, null, null, null);
+	}
 
-    @Override
-    public float testF(String input) {
-        return Float.MAX_VALUE;
-    }
+	@Override
+	public boolean testB(String input){
+		return true;
+	}
 
-    @Override
-    public int getPos() {
-        return 0;
-    }
+	@Override
+	public float testF(String input){
+		return Float.MAX_VALUE;
+	}
 
-    @Override
-    public String getDescription() {
-        return null;
-    }
+	@Override
+	public int getPos(){
+		return 0;
+	}
+
+	@Override
+	public String getDescription(){
+		return null;
+	}
+
 }
