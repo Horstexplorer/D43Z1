@@ -37,22 +37,38 @@ public interface ISimilarity extends IContentprovider, IWeightable{
     }
 
     public default float evalLBDice(ISimilarity iSimilarity){
-        return (ListBasedSorensenDice.diceCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight())+getRandomDif();
+        return evalLBDice(iSimilarity, true);
+    }
+
+    public default float evalLBDice(ISimilarity iSimilarity, boolean randomDif){
+        return (ListBasedSorensenDice.diceCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight())+((randomDif)?getRandomDif():0);
     }
 
     public default float evalSBDice(ISimilarity iSimilarity){
-        return (SetBasedSorensenDice.diceCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight())+getRandomDif();
+        return evalSBDice(iSimilarity, true);
+    }
+
+    public default float evalSBDice(ISimilarity iSimilarity, boolean randomDif){
+        return (SetBasedSorensenDice.diceCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight())+((randomDif)?getRandomDif():0);
     }
 
     public default float evalSBJaccard(ISimilarity iSimilarity){
-        return (SetBasedJaccard.similarityCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight())+getRandomDif();
+        return evalSBJaccard(iSimilarity, true);
+    }
+
+    public default float evalSBJaccard(ISimilarity iSimilarity, boolean randomDif){
+        return (SetBasedJaccard.similarityCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight())+((randomDif)?getRandomDif():0);
     }
 
     public default float evalLMJaccard(ISimilarity iSimilarity){
+        return evalLMJaccard(iSimilarity, true);
+    }
+
+    public default float evalLMJaccard(ISimilarity iSimilarity, boolean randomDif){
         if(this instanceof ILJEvaluable && iSimilarity instanceof ILJEvaluable){
-            return (LiamusJaccard.similarityCoefficient(((ILJEvaluable) this).getContentHash(), ((ILJEvaluable) iSimilarity).getContentHash()))*iSimilarity.getWeight()+getRandomDif();
+            return (LiamusJaccard.similarityCoefficient(((ILJEvaluable) this).getContentHash(), ((ILJEvaluable) iSimilarity).getContentHash()))*iSimilarity.getWeight()+(((randomDif)?getRandomDif():0));
         }else{
-            return (LiamusJaccard.similarityCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight()+getRandomDif());
+            return (LiamusJaccard.similarityCoefficient(getContent(), iSimilarity.getContent(), 2)*iSimilarity.getWeight()+(((randomDif)?getRandomDif():0)));
         }
     }
 

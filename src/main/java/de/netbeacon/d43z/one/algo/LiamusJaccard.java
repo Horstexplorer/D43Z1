@@ -16,10 +16,13 @@ public class LiamusJaccard {
     }
 
     public static BitArray64 hashString(String s, int nGramSize) {
+        return hashString(s, nGramSize, 16);
+    }
+
+    public static BitArray64 hashString(String s, int nGramSize, final int JACCARD_ARRAY_64WORDS) {
         if(s == null){ return null; }
-        final int JACCARD_ARRAY_32WORDS = 16;
-        final int JACCARD_HASHBITS = (JACCARD_ARRAY_32WORDS * 64) - 1;
-        BitArray64 stringBits = new BitArray64(JACCARD_ARRAY_32WORDS);
+        final int JACCARD_HASHBITS = (JACCARD_ARRAY_64WORDS * 64) - 1;
+        BitArray64 stringBits = new BitArray64(JACCARD_ARRAY_64WORDS);
         for (int i = 0; i < s.length()-nGramSize+1; i++) {
             int hash = 0;
             for (int h = 0; h < nGramSize; h++) hash = 31 * hash + s.charAt(i+h);
