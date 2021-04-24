@@ -22,7 +22,7 @@ import de.netbeacon.d43z.one.objects.base.Trigger;
 public class DefaultEvalTrigger extends Trigger<Content, Content>{
 
 	public DefaultEvalTrigger(){
-		super("Default Trigger", null, null, null);
+		super("Default trigger with high priority", null, null, null);
 	}
 
 	@Override

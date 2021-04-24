@@ -28,7 +28,7 @@ import java.util.List;
 public class DefaultEvalTask extends Task<Content, Pair<Eval, EvalRequest>, Object>{
 
 	public DefaultEvalTask(){
-		super(Integer.MIN_VALUE, "Eval Task", List.of(new DefaultEvalTrigger()), (content, quartet) -> {
+		super(Integer.MIN_VALUE, "Default eval task with low priority", List.of(new DefaultEvalTrigger()), (content, quartet) -> {
 			quartet.getValue1().enqueue(quartet.getValue2());
 			return null;
 		});
