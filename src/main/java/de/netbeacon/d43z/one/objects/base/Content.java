@@ -18,68 +18,69 @@ package de.netbeacon.d43z.one.objects.base;
 
 import de.netbeacon.d43z.one.algo.LiamusJaccard;
 import de.netbeacon.d43z.one.objects.bp.*;
-import de.netbeacon.d43z.one.objects.settings.StaticSettings;
+import de.netbeacon.d43z.one.settings.StaticSettings;
 import de.netbeacon.utils.json.serial.IJSONSerializable;
 import de.netbeacon.utils.json.serial.JSONSerializationException;
 import org.json.JSONObject;
 
 import java.util.UUID;
 
-import static de.netbeacon.d43z.one.objects.settings.StaticSettings.EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH;
+import static de.netbeacon.d43z.one.settings.StaticSettings.EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH;
 
-public class Content implements IIdentifiable, IContentprovider, ISimilarity, ILJEvaluable, IWeightable, IJSONSerializable {
+public class Content implements IIdentifiable, IContentprovider, ISimilarity, ILJEvaluable, IWeightable, IJSONSerializable{
 
-    private UUID uuid;
-    private String content;
-    private LiamusJaccard.BitArray64 contentHash;
-    private float weight = 1.0F;
+	private UUID uuid;
+	private String content;
+	private LiamusJaccard.BitArray64 contentHash;
+	private float weight = 1.0F;
 
-    public Content(){}
+	public Content(){}
 
-    public Content(String content){
-        this.uuid = UUID.randomUUID();
-        this.content = content;
-        this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM);
-    }
+	public Content(String content){
+		this.uuid = UUID.randomUUID();
+		this.content = content;
+		this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH.get()) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM.get());
+	}
 
-    @Override
-    public UUID getUUID() {
-        return uuid;
-    }
+	@Override
+	public UUID getUUID(){
+		return uuid;
+	}
 
-    @Override
-    public String getContent() {
-        return content;
-    }
+	@Override
+	public String getContent(){
+		return content;
+	}
 
-    @Override
-    public LiamusJaccard.BitArray64 getContentHash() {
-        return contentHash;
-    }
+	@Override
+	public LiamusJaccard.BitArray64 getContentHash(){
+		return contentHash;
+	}
 
-    @Override
-    public float getWeight() {
-        return weight;
-    }
+	@Override
+	public float getWeight(){
+		return weight;
+	}
 
-    @Override
-    public void setWeight(float f) {
-        this.weight = Math.max(f, 0);
-    }
+	@Override
+	public void setWeight(float f){
+		this.weight = Math.max(f, 0);
+	}
 
-    @Override
-    public JSONObject asJSON() throws JSONSerializationException {
-        return new JSONObject()
-                .put("contentId", uuid.toString())
-                .put("contentWeight", weight)
-                .put("content", content);
-    }
+	@Override
+	public JSONObject asJSON() throws JSONSerializationException{
+		return new JSONObject()
+			.put("contentId", uuid.toString())
+			.put("contentWeight", weight)
+			.put("content", content);
+	}
 
-    @Override
-    public void fromJSON(JSONObject jsonObject) throws JSONSerializationException {
-        this.uuid = UUID.fromString(jsonObject.getString("contentId"));
-        this.weight = jsonObject.getFloat("contentWeight");
-        this.content = jsonObject.getString("content");
-        this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM);
-    }
+	@Override
+	public void fromJSON(JSONObject jsonObject) throws JSONSerializationException{
+		this.uuid = UUID.fromString(jsonObject.getString("contentId"));
+		this.weight = jsonObject.getFloat("contentWeight");
+		this.content = jsonObject.getString("content");
+		this.contentHash = LiamusJaccard.hashString((EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH.get()) ? content.toLowerCase() : content, StaticSettings.EVAL_LIAMUS_JACCARD_NGRAM.get());
+	}
+
 }

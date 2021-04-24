@@ -1,5 +1,5 @@
 /*
- *     Copyright 2020 Horstexplorer @ https://www.netbeacon.de
+ *     Copyright 2021 Horstexplorer @ https://www.netbeacon.de
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-package de.netbeacon.utils.fakevoid;
+package de.netbeacon.d43z.one.objects.imp.trigger;
 
-/**
- * This class can be used for internal things where void is not allowed
- *
- * @author horstexplorer
- */
-public class FakeVoid{}
+import de.netbeacon.d43z.one.objects.base.Trigger;
+import de.netbeacon.d43z.one.objects.bp.IContentprovider;
+
+import java.util.regex.Pattern;
+
+public class RegexTrigger extends Trigger<IContentprovider, Boolean>{
+
+	public RegexTrigger(String desc, Pattern pattern){
+		super(desc, (input) -> pattern.matcher(input.getContent()).matches(), (bool) -> bool, (aBoolean) -> aBoolean ? 1F : 0F);
+	}
+
+}

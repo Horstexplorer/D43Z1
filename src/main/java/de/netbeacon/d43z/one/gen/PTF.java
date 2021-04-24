@@ -28,34 +28,36 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class PTF {
+public class PTF{
 
-    public static void main(String...args){
-        File f = new File("F:\\D31\\xenia_personality_booster_d43z1_ptf.txt");
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(f))){
-            List<ContentContext> contentContexts = new ArrayList<>();
-            String line;
-            int i = 0;
-            while((line = bufferedReader.readLine()) != null){
-                String[] triggers = line.split(";\\s");
-                List<String> options = new ArrayList<>();
-                while((line = bufferedReader.readLine()) != null && !line.contains("-")){
-                    options.add(line);
-                }
-                for(String trigger : triggers){
-                    for(String option : options){
-                        Content t = new Content(trigger);
-                        t.setWeight(1.1F);
-                        Content o = new Content(option);
-                        contentContexts.add(new ContentContext("Xenia Personality Booster_"+i++, new HashSet<>(), List.of(t, o)));
-                    }
-                }
-            }
-            ContextPool contextPool = new ContextPool("Xenia Personality Booster", contentContexts);
-            File of = new File("F:\\D31\\OUT\\xeniapersonalitybooster\\"+contextPool.getUUID().toString()+".cp.json");
-            Files.write(of.toPath(), contextPool.asJSON().toString(1).getBytes());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+	public static void main(String... args){
+		File f = new File("F:\\D31\\xenia_personality_booster_d43z1_ptf.txt");
+		try(BufferedReader bufferedReader = new BufferedReader(new FileReader(f))){
+			List<ContentContext> contentContexts = new ArrayList<>();
+			String line;
+			int i = 0;
+			while((line = bufferedReader.readLine()) != null){
+				String[] triggers = line.split(";\\s");
+				List<String> options = new ArrayList<>();
+				while((line = bufferedReader.readLine()) != null && !line.contains("-")){
+					options.add(line);
+				}
+				for(String trigger : triggers){
+					for(String option : options){
+						Content t = new Content(trigger);
+						t.setWeight(1.1F);
+						Content o = new Content(option);
+						contentContexts.add(new ContentContext("Xenia Personality Booster_" + i++, new HashSet<>(), List.of(t, o)));
+					}
+				}
+			}
+			ContextPool contextPool = new ContextPool("Xenia Personality Booster", contentContexts);
+			File of = new File("F:\\D31\\OUT\\xeniapersonalitybooster\\" + contextPool.getUUID().toString() + ".cp.json");
+			Files.write(of.toPath(), contextPool.asJSON().toString(1).getBytes());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
 }

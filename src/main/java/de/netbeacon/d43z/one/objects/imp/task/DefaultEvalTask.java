@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.one.objects.bp;
+package de.netbeacon.d43z.one.objects.imp.task;
 
+import de.netbeacon.d43z.one.eval.Eval;
+import de.netbeacon.d43z.one.eval.io.EvalRequest;
 import de.netbeacon.d43z.one.objects.base.Content;
-import de.netbeacon.d43z.one.objects.base.ContentShard;
+import de.netbeacon.d43z.one.objects.base.Task;
+import de.netbeacon.d43z.one.objects.imp.trigger.DefaultEvalTrigger;
+import de.netbeacon.utils.tuples.Pair;
 
-public interface IMatch{
+import java.util.List;
 
-	Content getInput();
+public class DefaultEvalTask extends Task<Content, Pair<Eval, EvalRequest>, Object>{
 
-	Content getEstimatedInput();
-
-	Content getEstimatedOutput();
-
-	ContentShard getOrigin();
-
-	float getCoefficient();
-
-	void setCoefficientAdjustment(float value);
-
-	float getAdjustedCoefficient();
+	public DefaultEvalTask(){
+		super(Integer.MIN_VALUE, "Default eval task with low priority", List.of(new DefaultEvalTrigger()), (content, quartet) -> {
+			quartet.getValue1().enqueue(quartet.getValue2());
+			return null;
+		});
+	}
 
 }

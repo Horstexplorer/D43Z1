@@ -29,26 +29,27 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TROPICALCHAT {
+public class TROPICALCHAT{
 
-    public static void main(String...args) throws IOException {
-        File file = new File("F:\\D31\\tropicalchattrain.json");
-        byte[] bytes = Files.readAllBytes(file.toPath());
-        JSONObject jsonObject = new JSONObject(new String(bytes));
-        int i = 0;
-        List<ContentContext> contentContexts = new LinkedList<>();
-        for(String key : jsonObject.keySet()){
-            JSONObject set = jsonObject.getJSONObject(key);
-            List<Content> contentList = new LinkedList<>();
-            JSONArray contentA = set.getJSONArray("content");
-            for(int ii = 0; ii < contentA.length(); ii++){
-                JSONObject msg = contentA.getJSONObject(ii);
-               contentList.add(new Content(msg.getString("message")));
-            }
-            contentContexts.add(new ContentContext("Tropical-Chat_"+i, new HashSet<>(), contentList));
-        }
-        ContextPool contextPool = new ContextPool("Tropical-Chat", contentContexts);
-        File out = new File("F:\\D31\\OUT\\"+contextPool.getUUID().toString()+".json");
-        Files.write(out.toPath(), contextPool.asJSON().toString(1).getBytes());
-    }
+	public static void main(String... args) throws IOException{
+		File file = new File("F:\\D31\\tropicalchattrain.json");
+		byte[] bytes = Files.readAllBytes(file.toPath());
+		JSONObject jsonObject = new JSONObject(new String(bytes));
+		int i = 0;
+		List<ContentContext> contentContexts = new LinkedList<>();
+		for(String key : jsonObject.keySet()){
+			JSONObject set = jsonObject.getJSONObject(key);
+			List<Content> contentList = new LinkedList<>();
+			JSONArray contentA = set.getJSONArray("content");
+			for(int ii = 0; ii < contentA.length(); ii++){
+				JSONObject msg = contentA.getJSONObject(ii);
+				contentList.add(new Content(msg.getString("message")));
+			}
+			contentContexts.add(new ContentContext("Tropical-Chat_" + i, new HashSet<>(), contentList));
+		}
+		ContextPool contextPool = new ContextPool("Tropical-Chat", contentContexts);
+		File out = new File("F:\\D31\\OUT\\" + contextPool.getUUID().toString() + ".json");
+		Files.write(out.toPath(), contextPool.asJSON().toString(1).getBytes());
+	}
+
 }

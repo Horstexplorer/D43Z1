@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.two.io.bp;
+package de.netbeacon.d43z.one.objects.imp.trigger;
 
-public interface IInputProvider<T> {
+import de.netbeacon.d43z.one.objects.base.Content;
+import de.netbeacon.d43z.one.objects.base.Trigger;
+import de.netbeacon.d43z.one.objects.bp.IContentprovider;
+import de.netbeacon.d43z.one.objects.bp.ISimilarity;
 
-    float[] getInput(T input);
+public class MatchTrigger extends Trigger<IContentprovider, Float>{
+
+	public MatchTrigger(String desc, ISimilarity.Algorithm algorithm, String match, float boolThreshold){
+		super(desc, (input) -> new Content(input.getContent()).eval(algorithm, new Content(match)), (aFloat) -> aFloat > boolThreshold, (aFloat) -> aFloat);
+	}
 
 }

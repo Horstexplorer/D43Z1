@@ -1,5 +1,5 @@
 /*
- *     Copyright 2020 Horstexplorer @ https://www.netbeacon.de
+ *     Copyright 2021 Horstexplorer @ https://www.netbeacon.de
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-package de.netbeacon.utils.fakevoid;
+package de.netbeacon.d43z.one.objects.imp.trigger;
 
-/**
- * This class can be used for internal things where void is not allowed
- *
- * @author horstexplorer
- */
-public class FakeVoid{}
+import de.netbeacon.d43z.one.objects.base.Content;
+import de.netbeacon.d43z.one.objects.base.Trigger;
+
+public class DefaultEvalTrigger extends Trigger<Content, Content>{
+
+	public DefaultEvalTrigger(){
+		super("Default trigger with high priority", null, null, null);
+	}
+
+	@Override
+	public boolean testB(Content input){
+		return true;
+	}
+
+	@Override
+	public float testF(Content input){
+		return Float.MAX_VALUE;
+	}
+
+}

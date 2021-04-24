@@ -18,8 +18,10 @@ package de.netbeacon.d43z.one.gen;
 
 import java.util.UUID;
 
-public class RANDOMUUID {
-    public static void main(String...args){
-        System.out.println(UUID.randomUUID().toString());
-    }
+public class RANDOMUUID{
+
+	public static void main(String... args){
+		System.out.println(UUID.randomUUID().toString());
+	}
+
 }

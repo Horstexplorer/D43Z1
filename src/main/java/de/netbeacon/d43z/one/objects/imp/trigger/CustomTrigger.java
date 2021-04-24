@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.two.io.bp;
+package de.netbeacon.d43z.one.objects.imp.trigger;
 
-public interface IOutputProvider<T> {
+import de.netbeacon.d43z.one.objects.base.Trigger;
 
-    T getOutput(float[] inputs);
+import java.util.function.Function;
+
+public class CustomTrigger<I, T> extends Trigger<I, T>{
+
+	public CustomTrigger(String desc, Function<I, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat){
+		super(desc, trigger, toBool, toFloat);
+	}
 
 }
