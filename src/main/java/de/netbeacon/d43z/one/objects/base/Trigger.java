@@ -16,62 +16,36 @@
 
 package de.netbeacon.d43z.one.objects.base;
 
-import de.netbeacon.d43z.one.objects.bp.IContentprovider;
-import de.netbeacon.d43z.one.objects.bp.ITrigger;
-
 import java.util.function.Function;
 
-public abstract class Trigger<T> implements ITrigger{
+public abstract class Trigger<I, T>{
 
-	private final int pos;
 	private final String desc;
-	private final Type type;
-	private final Function<String, T> trigger;
+	private final Function<I, T> trigger;
 	private final Function<T, Boolean> toBool;
 	private final Function<T, Float> toFloat;
 
-	public Trigger(int pos, String desc, Type type, Function<String, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat){
-		this.pos = pos;
+	public Trigger(String desc, Function<I, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat){
 		this.desc = desc;
-		this.type = type;
 		this.trigger = trigger;
 		this.toBool = toBool;
 		this.toFloat = toFloat;
 	}
 
-	@Override
-	public int getPos(){
-		return pos;
-	}
-
-	@Override
 	public String getDescription(){
 		return desc;
 	}
 
-	@Override
-	public boolean testB(String input){
+	public boolean testB(I input){
 		return toBool.apply(trigger.apply(input));
 	}
 
-	@Override
-	public float testF(String input){
+	public float testF(I input){
 		return toFloat.apply(trigger.apply(input));
 	}
 
-	@Override
-	public boolean testB(IContentprovider iContentprovider){
-		return testB(iContentprovider.getContent());
-	}
-
-	@Override
-	public float testF(IContentprovider iContentprovider){
-		return testF(iContentprovider.getContent());
-	}
-
-	@Override
-	public Type getType(){
-		return type;
+	public String toString(){
+		return "Trigger : " + desc;
 	}
 
 }

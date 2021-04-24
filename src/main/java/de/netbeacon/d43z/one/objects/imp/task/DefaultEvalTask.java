@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.one.objects.imp.trigger;
+package de.netbeacon.d43z.one.objects.imp.task;
 
+import de.netbeacon.d43z.one.eval.Eval;
+import de.netbeacon.d43z.one.eval.io.EvalRequest;
 import de.netbeacon.d43z.one.objects.base.Content;
-import de.netbeacon.d43z.one.objects.base.Trigger;
-import de.netbeacon.d43z.one.objects.bp.IContentprovider;
-import de.netbeacon.d43z.one.objects.bp.ISimilarity;
+import de.netbeacon.d43z.one.objects.base.Task;
+import de.netbeacon.d43z.one.objects.imp.trigger.DefaultEvalTrigger;
+import de.netbeacon.utils.tuples.Pair;
 
-public class MatchTrigger extends Trigger<IContentprovider, Float>{
+import java.util.List;
 
-	public MatchTrigger(String desc, ISimilarity.Algorithm algorithm, String match, float boolThreshold){
-		super(desc, (input) -> new Content(input.getContent()).eval(algorithm, new Content(match)), (aFloat) -> aFloat > boolThreshold, (aFloat) -> aFloat);
+public class DefaultEvalTask extends Task<Content, Pair<Eval, EvalRequest>, Object>{
+
+	public DefaultEvalTask(){
+		super(Integer.MIN_VALUE, "Eval Task", List.of(new DefaultEvalTrigger()), (content, quartet) -> {
+			quartet.getValue1().enqueue(quartet.getValue2());
+			return null;
+		});
 	}
 
 }

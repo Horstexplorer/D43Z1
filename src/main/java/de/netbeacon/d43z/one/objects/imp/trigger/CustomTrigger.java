@@ -20,10 +20,10 @@ import de.netbeacon.d43z.one.objects.base.Trigger;
 
 import java.util.function.Function;
 
-public class CustomTrigger<T> extends Trigger<T>{
+public class CustomTrigger<I, T> extends Trigger<I, T>{
 
-	public CustomTrigger(int pos, String desc, Function<String, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat){
-		super(pos, desc, Type.CUSTOM, trigger, toBool, toFloat);
+	public CustomTrigger(String desc, Function<I, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat){
+		super(desc, trigger, toBool, toFloat);
 	}
 
 }

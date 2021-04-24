@@ -18,14 +18,15 @@ package de.netbeacon.d43z.one.objects.imp.trigger;
 
 import de.netbeacon.d43z.one.algo.LiamusPattern;
 import de.netbeacon.d43z.one.objects.base.Trigger;
+import de.netbeacon.d43z.one.objects.bp.IContentprovider;
 import de.netbeacon.utils.tuples.Pair;
 
 import java.util.function.Function;
 
-public class LPTrigger extends Trigger<Pair<Boolean, Float>>{
+public class LPTrigger extends Trigger<IContentprovider, Pair<Boolean, Float>>{
 
-	public LPTrigger(int pos, String desc, LiamusPattern liamusPattern, Function<Pair<Boolean, Float>, Boolean> toBool, Function<Pair<Boolean, Float>, Float> toFloat){
-		super(pos, desc, Type.LIAMUSPATTERN, liamusPattern::match, toBool, toFloat);
+	public LPTrigger(String desc, LiamusPattern liamusPattern, Function<Pair<Boolean, Float>, Boolean> toBool, Function<Pair<Boolean, Float>, Float> toFloat){
+		super(desc, liamusPattern::match, toBool, toFloat);
 	}
 
 	public static Function<Pair<Boolean, Float>, Boolean> defaultToBool(){

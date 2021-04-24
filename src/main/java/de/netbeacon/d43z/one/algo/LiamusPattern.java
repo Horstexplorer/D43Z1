@@ -16,6 +16,7 @@
 
 package de.netbeacon.d43z.one.algo;
 
+import de.netbeacon.d43z.one.objects.bp.IContentprovider;
 import de.netbeacon.utils.tuples.Pair;
 import de.netbeacon.utils.tuples.Triplet;
 
@@ -51,6 +52,9 @@ public class LiamusPattern{
 		return new LiamusPattern(array64);
 	}
 
+	public Pair<Boolean, Float> match(IContentprovider iContentprovider){
+		return match(iContentprovider.getContent());
+	}
 
 	public Pair<Boolean, Float> match(String input){
 		// s0

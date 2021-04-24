@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.one.objects.bp;
+package de.netbeacon.d43z.one.objects.imp.trigger;
 
-public interface ITrigger{
+import de.netbeacon.d43z.one.objects.base.Content;
+import de.netbeacon.d43z.one.objects.base.Trigger;
 
-	enum Type{
-		CUSTOM,
-		LIAMUSPATTERN,
-		MATCH,
-		REGEX
+public class DefaultEvalTrigger extends Trigger<Content, Content>{
+
+	public DefaultEvalTrigger(){
+		super("Default Trigger", null, null, null);
 	}
 
-	default boolean testB(String input){ return false; }
+	@Override
+	public boolean testB(Content input){
+		return true;
+	}
 
-	default float testF(String input){ return 0F; }
-
-	default boolean testB(IContentprovider iContentprovider){ return false; }
-
-	default float testF(IContentprovider iContentprovider){ return 0F; }
-
-	int getPos();
-
-	String getDescription();
-
-	Type getType();
+	@Override
+	public float testF(Content input){
+		return Float.MAX_VALUE;
+	}
 
 }
