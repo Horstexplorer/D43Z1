@@ -33,6 +33,9 @@ public interface ITrigger {
 
     default float testF(IContentprovider iContentprovider){ return 0F; }
 
-    Type getType();
+    int getPos();
 
+    String getDescription();
+
+    Type getType();
 }

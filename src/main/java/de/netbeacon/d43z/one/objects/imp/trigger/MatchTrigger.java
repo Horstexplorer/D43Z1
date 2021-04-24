@@ -21,7 +21,7 @@ import de.netbeacon.d43z.one.objects.base.Trigger;
 import de.netbeacon.d43z.one.objects.bp.ISimilarity;
 
 public class MatchTrigger extends Trigger<Float> {
-    public MatchTrigger(ISimilarity.Algorithm algorithm, String match, float boolThreshold) {
-        super(Type.MATCH, (input) -> new Content(input).eval(algorithm, new Content(match)), (aFloat) -> aFloat > boolThreshold, (aFloat) -> aFloat);
+    public MatchTrigger(int pos, String desc, ISimilarity.Algorithm algorithm, String match, float boolThreshold) {
+        super(pos, desc, Type.MATCH, (input) -> new Content(input).eval(algorithm, new Content(match)), (aFloat) -> aFloat > boolThreshold, (aFloat) -> aFloat);
     }
 }

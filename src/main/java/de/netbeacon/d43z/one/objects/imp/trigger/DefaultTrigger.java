@@ -18,10 +18,29 @@ package de.netbeacon.d43z.one.objects.imp.trigger;
 
 import de.netbeacon.d43z.one.objects.base.Trigger;
 
-import java.util.regex.Pattern;
+public class DefaultTrigger extends Trigger<Object> {
+    
+    public DefaultTrigger() {
+        super(Integer.MIN_VALUE, "Default Trigger", null, null, null, null);
+    }
 
-public class RegexTrigger extends Trigger<Boolean> {
-    public RegexTrigger(int pos, String desc, Pattern pattern) {
-        super(pos, desc, Type.REGEX, (input) -> pattern.matcher(input).matches(), (bool) -> bool, (aBoolean) -> aBoolean ? 1F : 0F);
+    @Override
+    public boolean testB(String input) {
+        return true;
+    }
+
+    @Override
+    public float testF(String input) {
+        return Float.MAX_VALUE;
+    }
+
+    @Override
+    public int getPos() {
+        return 0;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
     }
 }

@@ -23,8 +23,8 @@ import de.netbeacon.utils.tuples.Pair;
 import java.util.function.Function;
 
 public class LPTrigger extends Trigger<Pair<Boolean, Float>> {
-    public LPTrigger(LiamusPattern liamusPattern, Function<Pair<Boolean, Float>, Boolean> toBool, Function<Pair<Boolean, Float>, Float> toFloat) {
-        super(Type.LIAMUSPATTERN, liamusPattern::match, toBool, toFloat);
+    public LPTrigger(int pos, String desc, LiamusPattern liamusPattern, Function<Pair<Boolean, Float>, Boolean> toBool, Function<Pair<Boolean, Float>, Float> toFloat) {
+        super(pos, desc, Type.LIAMUSPATTERN, liamusPattern::match, toBool, toFloat);
     }
 
     public static Function<Pair<Boolean, Float>, Boolean> defaultToBool(){

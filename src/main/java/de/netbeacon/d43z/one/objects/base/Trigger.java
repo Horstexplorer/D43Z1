@@ -23,16 +23,30 @@ import java.util.function.Function;
 
 public abstract class Trigger<T> implements ITrigger {
 
+    private final int pos;
+    private final String desc;
     private final Type type;
     private final Function<String, T> trigger;
     private final Function<T, Boolean> toBool;
     private final Function<T, Float> toFloat;
 
-    public Trigger(Type type, Function<String, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat) {
+    public Trigger(int pos, String desc, Type type, Function<String, T> trigger, Function<T, Boolean> toBool, Function<T, Float> toFloat) {
+        this.pos = pos;
+        this.desc = desc;
         this.type = type;
         this.trigger = trigger;
         this.toBool = toBool;
         this.toFloat = toFloat;
+    }
+
+    @Override
+    public int getPos() {
+        return pos;
+    }
+
+    @Override
+    public String getDescription() {
+        return desc;
     }
 
     @Override
