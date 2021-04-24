@@ -21,7 +21,7 @@ import de.netbeacon.d43z.one.objects.bp.IIdentifiable;
 
 import java.util.*;
 
-import static de.netbeacon.d43z.one.objects.settings.StaticSettings.*;
+import static de.netbeacon.d43z.one.settings.StaticSettings.*;
 
 public class ContentMatchBuffer implements IIdentifiable {
 

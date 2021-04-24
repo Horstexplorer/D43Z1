@@ -20,7 +20,7 @@ import de.netbeacon.d43z.one.algo.LiamusJaccard;
 import de.netbeacon.d43z.one.algo.ListBasedSorensenDice;
 import de.netbeacon.d43z.one.algo.SetBasedJaccard;
 import de.netbeacon.d43z.one.algo.SetBasedSorensenDice;
-import de.netbeacon.d43z.one.objects.settings.StaticSettings;
+import de.netbeacon.d43z.one.settings.StaticSettings;
 
 import java.util.Random;
 

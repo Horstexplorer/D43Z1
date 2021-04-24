@@ -18,14 +18,14 @@ package de.netbeacon.d43z.one.objects.base;
 
 import de.netbeacon.d43z.one.algo.LiamusJaccard;
 import de.netbeacon.d43z.one.objects.bp.*;
-import de.netbeacon.d43z.one.objects.settings.StaticSettings;
+import de.netbeacon.d43z.one.settings.StaticSettings;
 import de.netbeacon.utils.json.serial.IJSONSerializable;
 import de.netbeacon.utils.json.serial.JSONSerializationException;
 import org.json.JSONObject;
 
 import java.util.UUID;
 
-import static de.netbeacon.d43z.one.objects.settings.StaticSettings.EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH;
+import static de.netbeacon.d43z.one.settings.StaticSettings.EVAL_LIAMUS_JACCARD_LOWERCASE_MATCH;
 
 public class Content implements IIdentifiable, IContentprovider, ISimilarity, ILJEvaluable, IWeightable, IJSONSerializable {
 

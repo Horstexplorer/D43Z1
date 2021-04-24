@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static de.netbeacon.d43z.one.objects.settings.StaticSettings.*;
+import static de.netbeacon.d43z.one.settings.StaticSettings.*;
 
 public class Eval implements IShutdown {
 

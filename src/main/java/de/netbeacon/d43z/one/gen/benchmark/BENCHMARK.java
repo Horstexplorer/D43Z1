@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static de.netbeacon.d43z.one.objects.settings.StaticSettings.*;
+import static de.netbeacon.d43z.one.settings.StaticSettings.*;
 
 public class BENCHMARK {
 

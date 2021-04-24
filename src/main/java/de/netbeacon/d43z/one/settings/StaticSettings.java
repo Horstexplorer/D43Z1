@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.one.objects.settings;
+package de.netbeacon.d43z.one.settings;
 
 import de.netbeacon.d43z.one.objects.bp.ISimilarity;
 

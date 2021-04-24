@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import java.util.*;
 
-import static de.netbeacon.d43z.one.objects.settings.StaticSettings.CONTENT_SHARD_SIZE;
+import static de.netbeacon.d43z.one.settings.StaticSettings.CONTENT_SHARD_SIZE;
 
 public class ContentContext implements IIdentifiable, IJSONSerializable {
 
