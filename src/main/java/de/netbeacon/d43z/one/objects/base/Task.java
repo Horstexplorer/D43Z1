@@ -57,6 +57,10 @@ public abstract class Task<T, E, R>{
 		return task.apply(input, externalSupplier.get());
 	}
 
+	public R execute(T input, E external){
+		return task.apply(input, external);
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder stringBuilder = new StringBuilder();
