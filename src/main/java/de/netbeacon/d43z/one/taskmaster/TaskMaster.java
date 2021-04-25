@@ -58,6 +58,14 @@ public class TaskMaster<I>{
 		return best;
 	}
 
+	public Pair<Task<I, ?, ?>, Float> getTaskOrDefault(I input, float threshold, Task<I, ?, ?> default_){
+		var t = getTask(input);
+		if(t.getValue2() < threshold){
+			return new Pair<>(default_, threshold);
+		}
+		return t;
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder stringBuilder = new StringBuilder();
