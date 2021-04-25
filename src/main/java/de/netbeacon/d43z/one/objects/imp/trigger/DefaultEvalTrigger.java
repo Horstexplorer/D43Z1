@@ -21,8 +21,11 @@ import de.netbeacon.d43z.one.objects.base.Trigger;
 
 public class DefaultEvalTrigger extends Trigger<Content, Content>{
 
-	public DefaultEvalTrigger(){
-		super("Default trigger with high priority", null, null, null);
+	private final float threshold;
+
+	public DefaultEvalTrigger(float threshold){
+		super("Default trigger with a threshold of " + threshold, null, null, null);
+		this.threshold = threshold;
 	}
 
 	@Override
@@ -32,7 +35,7 @@ public class DefaultEvalTrigger extends Trigger<Content, Content>{
 
 	@Override
 	public float testF(Content input){
-		return Float.MAX_VALUE;
+		return threshold;
 	}
 
 }
