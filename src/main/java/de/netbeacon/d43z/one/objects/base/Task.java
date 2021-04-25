@@ -18,7 +18,6 @@ package de.netbeacon.d43z.one.objects.base;
 
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 public abstract class Task<T, E, R>{
 
@@ -53,8 +52,8 @@ public abstract class Task<T, E, R>{
 		return max;
 	}
 
-	public R execute(T input, Supplier<E> externalSupplier){
-		return task.apply(input, externalSupplier.get());
+	public R execute(T input, E external){
+		return task.apply(input, external);
 	}
 
 	@Override
