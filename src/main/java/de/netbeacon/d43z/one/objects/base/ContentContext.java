@@ -40,7 +40,7 @@ public class ContentContext implements IIdentifiable, IJSONSerializable{
 		this.uuid = UUID.randomUUID();
 		this.description = description;
 		this.metaTags.addAll(metaTags);
-		ListUtils.partition(contents, CONTENT_SHARD_SIZE.get()).forEach(contentSub -> contentShards.add(new ContentShard(this, contentSub)));
+		ListUtils.partition(contents, CONTENT_SHARD_SIZE.get()).forEach(contentSub -> contentShards.add(new ContentShard(this, new LinkedList<>(contentSub))));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ContentContext implements IIdentifiable, IJSONSerializable{
 			contents.add(content);
 		}
 		contentShards.clear();
-		ListUtils.partition(contents, CONTENT_SHARD_SIZE.get()).forEach(contentSub -> contentShards.add(new ContentShard(this, contentSub)));
+		ListUtils.partition(contents, CONTENT_SHARD_SIZE.get()).forEach(contentSub -> contentShards.add(new ContentShard(this, new LinkedList<>(contentSub))));
 	}
 
 }
