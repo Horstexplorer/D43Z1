@@ -124,16 +124,20 @@ public class Eval implements IShutdown{
 	}
 
 	private ContentMatch RUN_EVAL(ISimilarity.Algorithm algorithm, IContextPool contextPool, ContentMatchBuffer contentMatchBuffer, Content content, long maxDurationMs){
+		long runEvalPreloadStart = System.currentTimeMillis();
 		List<ContentContext> contentContexts = contextPool.getContentContexts();
 		LinkedList<ContentShard> contentShards = new LinkedList<>();
-		contentContexts.stream().map(ContentContext::getContentShards).forEachOrdered(contentShards::addAll);
+		contentContexts.stream().map(ContentContext::getContentShards).forEach(contentShards::addAll);
 		Collections.shuffle(contentShards);
 
 		ConcurrentLinkedQueue<ContentShard> contentQueue = new ConcurrentLinkedQueue<>(contentShards);
 
 		List<Future<ContentMatch>> processingFutures = new ArrayList<>();
+
+		long runEvalPreloadEnd = System.currentTimeMillis();
+
 		for(int i = 0; i < EVAL_MAX_THREADS_PER_REQUEST.get(); i++){
-			processingFutures.add(PROCESSING_EXECUTOR.submit(() -> RUN_ANALYZE(contentQueue, contentMatchBuffer, algorithm, content, maxDurationMs)));
+			processingFutures.add(PROCESSING_EXECUTOR.submit(() -> RUN_ANALYZE(contentQueue, contentMatchBuffer, algorithm, content, maxDurationMs - (runEvalPreloadStart - runEvalPreloadEnd))));
 		}
 		ContentMatch bestMatch = new ContentMatch(null, null, null, null, -1);
 		for(Future<ContentMatch> processingFuture : processingFutures){
@@ -154,6 +158,8 @@ public class Eval implements IShutdown{
 
 	private static ContentMatch RUN_ANALYZE(ConcurrentLinkedQueue<ContentShard> contentShards, ContentMatchBuffer contentMatchBuffer, ISimilarity.Algorithm algorithm, Content content, long maxDurationMs){
 		try{
+			long startNanos = System.nanoTime();
+
 			ContentMatch lastMatch = contentMatchBuffer.getLastMatch();
 			Map<ContentContext, Float> matchEval = contentMatchBuffer.getLastMatchContextEval();
 			Set<String> expectedMetaTags = contentMatchBuffer.expectedMetaTags();
@@ -164,7 +170,6 @@ public class Eval implements IShutdown{
 			ContentMatchBuffer.Statistics.FillState fillState = statistics.getFillState();
 			float avgOPM = statistics.getAvgOutputMatchCoefficient();
 
-			long startNanos = System.nanoTime();
 			while((System.nanoTime() - startNanos) < (maxDurationMs * 1000000) && (contentShard = contentShards.poll()) != null){
 				int tagMatches = 0;
 				if(EVAL_ENABLE_TAG_POLICY.get() && lastMatch != null && fillState.equals(ContentMatchBuffer.Statistics.FillState.FULL) && avgOPM > EVAL_TAG_POLICY_OVERRIDE_THRESHOLD.get()){
