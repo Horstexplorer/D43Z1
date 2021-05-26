@@ -19,38 +19,38 @@ package de.netbeacon.d43z.two.neurons;
 import java.util.Arrays;
 import java.util.function.UnaryOperator;
 
-public class NeuronGroup {
+public class NeuronGroup{
 
 	private final int inputs;
 	private final int outputs;
 	private final Neuron[] neurons;
 
-	public NeuronGroup(UnaryOperator<Float> function, int inputs, int outputs, float ... weights){
+	public NeuronGroup(UnaryOperator<Float> function, int inputs, int outputs, float... weights){
 		this.inputs = inputs;
 		this.outputs = outputs;
-		if(inputs*outputs != weights.length){
+		if(inputs * outputs != weights.length){
 			throw new IllegalArgumentException("Input Weight Size Does Not Match Number Of Weights Stored");
 		}
 		this.neurons = new Neuron[outputs];
 		for(int i = 0; i < neurons.length; i++){
-			neurons[i] = new Neuron(function, Arrays.copyOfRange(weights, inputs*i, inputs*(i+1)));
+			neurons[i] = new Neuron(function, Arrays.copyOfRange(weights, inputs * i, inputs * (i + 1)));
 		}
 	}
 
-	public int getInputs() {
+	public int getInputs(){
 		return inputs;
 	}
 
-	public int getOutputs() {
+	public int getOutputs(){
 		return outputs;
 	}
 
-	public Neuron[] getNeurons() {
+	public Neuron[] getNeurons(){
 		return neurons;
 	}
 
-	public void activate(float ... inputs){
-		for (Neuron neuron : neurons) {
+	public void activate(float... inputs){
+		for(Neuron neuron : neurons){
 			neuron.activate(inputs);
 		}
 	}
