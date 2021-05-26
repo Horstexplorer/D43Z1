@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.netbeacon.d43z.two.neurons;
+package de.netbeacon.d43z.two.objects.neurons;
 
 import java.util.function.UnaryOperator;
 
