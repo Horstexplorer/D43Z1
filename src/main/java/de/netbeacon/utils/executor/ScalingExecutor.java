@@ -18,20 +18,17 @@ package de.netbeacon.utils.executor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Can be used to handle executions in a fast scaling way
  *
  * @author horstexplorer
  */
-public class ScalingExecutor{
+public class ScalingExecutor implements Executor{
 
 	private final ThreadPoolExecutor baseExecutor;
-	private final ThreadPoolExecutor scaleExecutor;
+	private final ThreadPoolExecutor scalingExecutor;
 	private final ArrayBlockingQueue<Runnable> taskQueue;
 
 	/**
@@ -47,8 +44,8 @@ public class ScalingExecutor{
 		taskQueue = new ArrayBlockingQueue<>(maxWaitingTasks);
 		this.baseExecutor = new ThreadPoolExecutor(baseThreads, baseThreads, keepAliveTime, timeUnit, new ArrayBlockingQueue<>(1));
 		this.baseExecutor.prestartAllCoreThreads();
-		this.scaleExecutor = new ThreadPoolExecutor(additionalThreads, additionalThreads, keepAliveTime, timeUnit, taskQueue);
-		this.scaleExecutor.allowCoreThreadTimeOut(true);
+		this.scalingExecutor = new ThreadPoolExecutor(additionalThreads, additionalThreads, keepAliveTime, timeUnit, taskQueue);
+		this.scalingExecutor.allowCoreThreadTimeOut(true);
 	}
 
 
@@ -59,12 +56,13 @@ public class ScalingExecutor{
 	 *
 	 * @throws RejectedExecutionException if the queue is full
 	 */
+	@Override
 	public void execute(Runnable runnable) throws RejectedExecutionException{
 		try{
 			baseExecutor.execute(runnable);
 		}
 		catch(RejectedExecutionException e){
-			scaleExecutor.execute(runnable); // this might throw
+			scalingExecutor.execute(runnable); // this might throw
 		}
 	}
 
@@ -83,7 +81,7 @@ public class ScalingExecutor{
 	 * @return int
 	 */
 	public int getMaxPoolSize(){
-		return baseExecutor.getCorePoolSize() + scaleExecutor.getCorePoolSize();
+		return baseExecutor.getCorePoolSize() + scalingExecutor.getCorePoolSize();
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class ScalingExecutor{
 	 * @return int
 	 */
 	public int getCurrentPoolSize(){
-		return baseExecutor.getPoolSize() + scaleExecutor.getPoolSize();
+		return baseExecutor.getPoolSize() + scalingExecutor.getPoolSize();
 	}
 
 	/**
@@ -119,14 +117,27 @@ public class ScalingExecutor{
 	 * @return int
 	 */
 	public int getActiveThreads(){
-		return baseExecutor.getActiveCount() + scaleExecutor.getActiveCount();
+		return baseExecutor.getActiveCount() + scalingExecutor.getActiveCount();
+	}
+
+	/**
+	 * Used to await termination
+	 *
+	 * @param scale    time units
+	 * @param timeUnit time unit
+	 *
+	 * @throws InterruptedException on exception
+	 */
+	public void awaitTermination(long scale, TimeUnit timeUnit) throws InterruptedException{
+		baseExecutor.awaitTermination(scale, timeUnit);
+		scalingExecutor.awaitTermination(scale, timeUnit);
 	}
 
 	/**
 	 * Used to shutdown
 	 */
 	public void shutdown(){
-		scaleExecutor.shutdown();
+		scalingExecutor.shutdown();
 		baseExecutor.shutdown();
 	}
 
@@ -139,7 +150,7 @@ public class ScalingExecutor{
 	 */
 	public List<Runnable> shutdownNow() throws SecurityException{
 		List<Runnable> list = new ArrayList<>();
-		list.addAll(scaleExecutor.shutdownNow());
+		list.addAll(scalingExecutor.shutdownNow());
 		list.addAll(baseExecutor.shutdownNow());
 		return list;
 	}
