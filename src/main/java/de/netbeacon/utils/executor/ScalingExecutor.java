@@ -29,7 +29,7 @@ public class ScalingExecutor implements Executor{
 
 	private final ThreadPoolExecutor baseExecutor;
 	private final ThreadPoolExecutor scalingExecutor;
-	private final ArrayBlockingQueue<Runnable> taskQueue;
+	private final BlockingQueue<Runnable> taskQueue;
 
 	/**
 	 * Creates a new instance of this class
@@ -41,7 +41,12 @@ public class ScalingExecutor implements Executor{
 	 * @param timeUnit          unit of keepAliveTime
 	 */
 	public ScalingExecutor(int baseThreads, int additionalThreads, int maxWaitingTasks, int keepAliveTime, TimeUnit timeUnit){
-		taskQueue = new ArrayBlockingQueue<>(maxWaitingTasks);
+		if(maxWaitingTasks <= 0){
+			taskQueue = new LinkedBlockingQueue<>();
+		}
+		else{
+			taskQueue = new ArrayBlockingQueue<>(maxWaitingTasks);
+		}
 		this.baseExecutor = new ThreadPoolExecutor(baseThreads, baseThreads, keepAliveTime, timeUnit, new ArrayBlockingQueue<>(1));
 		this.baseExecutor.prestartAllCoreThreads();
 		this.scalingExecutor = new ThreadPoolExecutor(additionalThreads, additionalThreads, keepAliveTime, timeUnit, taskQueue);
